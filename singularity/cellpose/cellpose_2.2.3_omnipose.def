@@ -1,0 +1,13 @@
+Bootstrap: localimage
+From: cellprofiller_4.2.6_v2.sif
+
+%post
+cd /opt
+git clone https://github.com/CellProfiler/CellProfiler-plugins.git
+cd CellProfiler-plugins
+pip install -e .[cellpose]
+pip install -e .[omnipose]
+#pip install cellpose==2.2.3
+#pip install omnipose==1.0.6
+
+

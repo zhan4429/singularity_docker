@@ -1,0 +1,18 @@
+Bootstrap: localimage
+From: /cluster/tufts/biocontainers/base_images/ciq_openmpi_spack_jan14.sif
+
+%labels
+Author "Yucheng Zhang <yzhang85@tufts.edu>" Version v1.2.0
+
+%post
+## Install dependencies
+yum -y update
+yum -y install flex bison gmp-devel glibc-devel
+## Download and install raxml-ng
+cd /opt
+git clone --recursive https://github.com/amkozlov/raxml-ng 
+cd raxml-ng
+mkdir build && cd build
+cmake -DUSE_MPI=ON ..
+make
+make install

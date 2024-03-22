@@ -1,0 +1,8 @@
+Bootstrap: localimage
+From: r_4.3.1_scrnaseq.sif
+
+%post
+apt-get update -y
+rm -rf /usr/local/lib/R/site-library/00LOCK-tiledbsoma
+## cellxgene.census 
+Rscript -e "install.packages('cellxgene.census',repos=c('https://chanzuckerberg.r-universe.dev', 'https://cloud.r-project.org'))"

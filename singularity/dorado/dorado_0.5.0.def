@@ -1,0 +1,17 @@
+Bootstrap: docker
+From: nvidia/cuda:11.0.3-cudnn8-devel-ubuntu16.04
+
+%labels
+    Author "Yucheng Zhang <yzhang85@tufts.edu>"
+    Version v0.5.0
+
+%post
+    apt-get -y update
+    apt-get install -y wget
+    cd /opt
+    wget https://cdn.oxfordnanoportal.com/software/analysis/dorado-0.5.0-linux-x64.tar.gz
+    tar -xvf dorado-0.5.0-linux-x64.tar.gz && rm dorado-0.5.0-linux-x64.tar.gz
+    
+%environment
+    export PATH=/opt/dorado-0.5.0-linux-x64/bin/:$PATH
+

@@ -1,0 +1,24 @@
+Bootstrap: docker
+From: rocker/tidyverse:4.3.2
+
+%environment
+export PATH=$PATH:/usr/lib/rstudio-server/bin
+export PATH=/opt/mamba/bin:$PATH
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/mamba/lib
+%post
+#Exporting variables needed
+TZ='America/Indiana/Indianapolis'
+
+# update the system and install building essentials
+ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+apt-get update
+apt-get install -y  build-essential vim wget libcurl4-openssl-dev openssl
+cd /opt
+wget https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh
+bash Mambaforge-Linux-x86_64.sh -b -p /opt/mamba
+rm /opt/Mambaforge-Linux-x86_64.sh
+export PATH=/opt/mamba/bin:$PATH
+mamba install -c bioconda r-base r-shinyngs r-tidyverse r-markdown
+sed -i 's/usr\/local/\opt\/mamba/' /etc/rstudio/rserver.conf
+/opt/mamba/bin/Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE))  install.packages("BiocManager")'
+/opt/mamba/bin/Rscript -e "BiocManager::install('GenomeInfoDb')"

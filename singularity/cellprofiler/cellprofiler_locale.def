@@ -1,0 +1,9 @@
+Bootstrap: localimage
+From: /cluster/tufts/biocontainers/images/cellprofiler_4.2.6.sif
+
+%environment
+export LANG=en_US.UTF-8
+
+%post
+apt-get update
+apt-get -y install locales locales-all 

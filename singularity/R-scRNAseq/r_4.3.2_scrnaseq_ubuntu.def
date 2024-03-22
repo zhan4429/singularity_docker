@@ -1,0 +1,8 @@
+Bootstrap: localimage
+From: r_4.3.2_rstduio_2023.09_ubuntu22.sif
+
+%post
+Rscript -e "install.packages('tiledbsoma', repos = c('https://tiledb-inc.r-universe.dev',
+                                         'https://cloud.r-project.org'))"
+## cellxgene.census 
+Rscript -e "install.packages('cellxgene.census',repos=c('https://chanzuckerberg.r-universe.dev', 'https://cloud.r-project.org'))"

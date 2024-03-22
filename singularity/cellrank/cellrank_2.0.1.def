@@ -1,0 +1,7 @@
+Bootstrap: localimage
+From: /cluster/tufts/biocontainers/base_images/mamba_1.4.2.sif
+
+%post
+pip install cellrank
+pip install ipython
+pip install ipykernel

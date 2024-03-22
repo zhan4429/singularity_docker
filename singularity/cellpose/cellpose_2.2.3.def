@@ -1,0 +1,8 @@
+Bootstrap: localimage
+From: cellprofiller_4.2.6_v2.sif
+
+%post
+pip install cellpose==2.2.3
+pip install omnipose==1.0.6
+
+

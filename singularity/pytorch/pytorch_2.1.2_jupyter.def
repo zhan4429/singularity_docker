@@ -1,0 +1,7 @@
+Bootstrap: localimage
+From: /cluster/tufts/ngc/images/pytorch_pytorch:2.1.2-cuda11.8-cudnn8-runtime.sif
+
+%post
+pip install ipython
+pip install ipykernel 
+

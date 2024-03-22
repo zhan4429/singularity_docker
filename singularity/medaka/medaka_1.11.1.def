@@ -1,0 +1,5 @@
+Bootstrap: localimage
+From: /cluster/tufts/biocontainers/base_images/mamba_1.4.2.sif
+
+%post
+mamba install -c conda-forge -c bioconda medaka

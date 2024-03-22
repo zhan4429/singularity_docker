@@ -1,0 +1,31 @@
+Bootstrap: localimage
+From: r-scrnaseq_4.3.2.sif
+
+%post
+apt-get update 
+#apt-get install -y libboost-all-dev 
+#Rscript -e "install.packages('iCellR')"
+#Rscript -e "BiocManager::install('EGSEA')" 
+#Rscript -e "BiocManager::install('EGSEAdata')" 
+#Rscript -e "install.packages('wesanderson')"
+Rscript -e "BiocManager::install('qusage')"
+
+#Rscript -e "devtools::install_github('velocyto-team/velocyto.R')"
+
+#Rscript -e "devtools::install_github('C3BI-pasteur-fr/UTechSCB-SCHNAPPs',dependencies = TRUE)"
+
+## Install latest cmake
+#cd /opt
+#wget https://github.com/Kitware/CMake/releases/download/v3.28.0-rc3/cmake-3.28.0-rc3.tar.gz
+#tar -zxvf cmake-3.28.0-rc3.tar.gz
+#cd cmake-3.28.0-rc3
+#./bootstrap
+#make
+#make install
+
+#Rscript -e 'devtools::install_version("Matrix",version = "1.6.1.1")'
+#Rscript -e "install.packages('SeuratObject')"
+#Rscript -e "devtools::install_github('chris-mcginnis-ucsf/DoubletFinder')"
+#pip install tiledb
+#Rscript -e "install.packages('tiledb')"
+#Rscript -e "install.packages('cellxgene.census',repos=c('https://chanzuckerberg.r-universe.dev', 'https://cloud.r-project.org'))"

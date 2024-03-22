@@ -1,0 +1,8 @@
+Bootstrap: docker
+From: yzhangtufts/r-scrnaseq:4.3.2_base
+
+%post
+## SCHNAPPs
+Rscript -e "devtools::install_github('C3BI-pasteur-fr/UTechSCB-SCHNAPPs',dependencies = TRUE)"
+
+

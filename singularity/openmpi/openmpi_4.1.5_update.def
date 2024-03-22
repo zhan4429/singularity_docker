@@ -1,0 +1,19 @@
+Bootstrap: localimage
+From: /cluster/tufts/biocontainers/base_images/openmpi_4.1.5_pmi2.sif
+
+%labels
+Author "Yucheng Zhang <yzhang85@tufts.edu>"
+
+%post
+## Add gcc g++, cmake and git
+yum -y update
+yum -y install gcc-c++ git wget
+
+cd /opt
+wget https://github.com/Kitware/CMake/releases/download/v3.28.1/cmake-3.28.1.tar.gz
+tar -xf cmake-3.28.1.tar.gz && rm cmake-3.28.1.tar.gz 
+cd cmake-3.28.1
+./bootstrap --prefix=/usr/local
+
+make
+make install

@@ -1,0 +1,14 @@
+Bootstrap: docker
+From: condaforge/mambaforge
+
+%post
+conda install -c conda-forge numpy pandas scipy 
+cd /opt
+git clone https://github.com/isaacovercast/easySFS.git
+cd easySFS
+chmod 777 easySFS.py
+./easySFS.py
+
+%environment
+export PATH=/opt/easySFS:$path
+

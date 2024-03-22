@@ -1,0 +1,7 @@
+Bootstrap: localimage
+From: /cluster/tufts/biocontainers/images/r_scrnaseq_4.3.1_jupyter.sif
+
+%post
+#Rscript -e "install.packages('IRkernel')"
+pip install jupyter-client
+Rscript -e "IRkernel::installspec(name = 'ir43', displayname = 'R 4.3.1 scRNAseq')"

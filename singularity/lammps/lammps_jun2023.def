@@ -1,0 +1,6 @@
+Bootstrap: docker
+From: nvcr.io/hpc/lammps:patch_15Jun2023
+
+%environment
+export PATH=$PATH:/usr/local/lammps/sm60/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lammps/sm60/lib

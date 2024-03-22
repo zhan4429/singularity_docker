@@ -1,0 +1,142 @@
+Bootstrap: docker
+From: ubuntu:22.04
+
+%labels
+    Author "Yucheng Zhang <yzhang85@tufts.edu>"
+
+%help
+    This container contains the r/4.3.2  and Rstudio server/2023.06
+
+%post
+    mkdir -p /cluster/tufts
+    #Exporting variables needed
+    TZ='America/Indiana/Indianapolis'
+    export PYTHONNOUSERSITE=1
+
+    # update the system and install building essentials
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone  &&
+    apt-get -y update
+    ### Install openjdk.
+    apt-get -y install wget openjdk-11-jdk \
+    aptitude \
+    gnupg \
+    software-properties-common \
+    dirmngr \
+    libssl-dev libudunits2-dev psmisc sudo
+
+    wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | gpg --dearmor -o /usr/share/keyrings/r-project.gpg
+    echo "deb [signed-by=/usr/share/keyrings/r-project.gpg] https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/" | tee -a /etc/apt/sources.list.d/r-project.list
+    apt-get update -y 
+
+    ### Install R
+    apt-get --fix-broken install -y \
+            gcc g++ \
+            cmake \
+            libcairo2-dev \
+            libcurl4-openssl-dev \
+            libicu-dev \
+            libgsl-dev \
+            libgtk-3-dev \
+            libhdf5-dev \
+            libnetcdf-dev \
+            libssl-dev \
+            libv8-dev \
+            libxml2-dev \
+            libxt-dev \
+            libcurl4-openssl-dev \
+            libssl-dev \
+            libxml2-dev \
+            libcairo2-dev \
+            libxt-dev \
+            libpng-dev \
+            libfreetype6-dev \
+            libtiff5-dev \
+            libjpeg-dev \
+            libgsl-dev \
+            librsvg2-dev \
+            libnode-dev \
+            libv8-dev libgmp3-dev \
+            software-properties-common \
+            libharfbuzz-dev \
+            librsvg2-dev \
+            libproj-dev \
+            libbz2-dev \
+            liblzma-dev \
+            libopenblas-base \
+            liblapack3 \
+            libgeos-dev \
+            zlib1g-dev \
+            libfribidi-dev \
+            r-base r-recommended r-base-html \
+            libclang-dev libxkbcommon-x11-0 libpq5 \
+            gnupg apt-transport-https ca-certificates \
+	    software-properties-common libgdal-dev \
+	    python-is-python3 python3-pip python3-venv \
+	    libpng-dev libjpeg-dev \
+            default-jre  default-jdk
+
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+    add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
+    apt-get -y update && apt-get -y install  r-base
+
+    ### System libraries.
+    apt-get -y install git locales locales-all sqlite3 libxml2-dev libcurl4-openssl-dev tree ca-certificates libboost-all-dev libssl-dev
+
+
+  # Add a default CRAN mirror
+  echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /usr/lib/R/etc/Rprofile.site
+
+  # Install RStudio
+  apt-get install -y --no-install-recommends \
+    ca-certificates \
+    wget \
+    gdebi-core
+ 
+  cd /opt && wget https://s3.amazonaws.com/rstudio-ide-build/server/jammy/amd64/rstudio-server-2023.06.2-561-amd64.deb
+  dpkg -i /opt/rstudio-server-2023.06.2-561-amd64.deb
+  rm -f /opt/rstudio-server-2023.06.2-561-amd64.deb
+ 
+  ## clean up
+   apt-get -y autoremove
+   apt-get clean
+   rm -rf /var/lib/apt/lists/*
+
+
+   ### Install R packages. 
+   R CMD javareconf
+#   Rscript -e "install.packages('rjava')"
+#   Rscript -e "install.packages('openxlsx', dependencies = TRUE)"
+#   Rscript -e "install.packages('remotes')"
+#   Rscript -e "install.packages('rmdformats')"
+#   Rscript -e "install.packages('vioplot')"
+#   Rscript -e "install.packages('clustree')"
+#   Rscript -e "install.packages('ggraph')"
+#   Rscript -e "install.packages('xlsx')"
+#   Rscript -e "install.packages('ggthemes')"
+#   Rscript -e 'install.packages("rmarkdown")'
+#   Rscript -e 'install.packages("markdown")'
+#   Rscript -e 'install.packages("reticulate")'
+#   Rscript -e 'install.packages("tidyverse")'
+#   Rscript -e 'install.packages("data.table")'
+#   Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE))  install.packages("BiocManager")'
+#   Rscript -e "install.packages('RColorBrewer')"
+#   Rscript -e "install.packages('ggsci')"
+#   Rscript -e "install.packages('devtools')"
+
+
+%runscript
+    default="rserver"
+    echo "Arguments received: $*"
+    # If $1 is a command, try executing it,
+    # otherwise consider everything as arguments for the default tool.
+    if command -v "$1" > /dev/null 2>&1; then
+        exec "$@"
+    else
+        exec $default "$@"
+    fi
+
+%environment
+    export PYTHONNOUSERSITE=1
+    export LC_ALL=C
+    export LANG=en_US.UTF-8
+    export LANGUAGE=en_US.UTF-8

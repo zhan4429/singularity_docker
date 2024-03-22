@@ -1,0 +1,23 @@
+bootstrap: docker
+from: diddlydoodles/humann:3.8
+
+%setup
+mkdir -p $APPTAINER_ROOTFS/cluster/tufts/biocontainers/datasets/humann/metaphlan
+
+%environment
+######################################################################
+export LC_ALL=C
+
+
+%post
+######################################################################
+APP=humann3
+APPVER=3.8
+
+metaphlan --install --nproc 8 --index mpa_vJan21_CHOCOPhlAnSGB_202103
+humann_config --update database_folders nucleotide /cluster/tufts/biocontainers/datasets/humann/chocophlan
+humann_config --update database_folders protein /cluster/tufts/biocontainers/datasets/humann/uniref
+humann_config --update database_folders utility_mapping /cluster/tufts/biocontainers/datasets/humann/utility_mapping
+
+
+######################################################################

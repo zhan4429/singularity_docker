@@ -1,0 +1,6 @@
+Bootstrap: docker
+From: condaforge/mambaforge
+
+%post
+apt-get update && apt-get -y install libgl1
+mamba install -c conda-forge -c schrodinger pymol-bundle

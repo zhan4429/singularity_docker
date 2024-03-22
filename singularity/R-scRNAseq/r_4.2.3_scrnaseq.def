@@ -1,0 +1,20 @@
+Bootstrap: localimage
+From: /cluster/tufts/biocontainers/images/r_4.2.3_scrnaseq_rstudio_update1.sif
+
+%post
+apt-get update -y
+
+## Install latest cmake
+cd /opt
+wget https://github.com/Kitware/CMake/releases/download/v3.28.0-rc3/cmake-3.28.0-rc3.tar.gz
+tar -zxvf cmake-3.28.0-rc3.tar.gz
+cd cmake-3.28.0-rc3
+./bootstrap
+make
+make install
+
+## cellxgene.census 
+pip install tiledb
+Rscript -e "install.packages('tiledb')"
+Rscript -e "install.packages('cellxgene.census',repos=c('https://chanzuckerberg.r-universe.dev', 'https://cloud.r-project.org'))"
+
